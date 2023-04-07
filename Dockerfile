@@ -3,7 +3,7 @@ FROM node:16.13.2-buster-slim as dependency-install
 # Install dependencies
 WORKDIR /app
 COPY package*.* ./
-
+COPY nuxt.config.ts ./
 COPY layouts ./layouts
 COPY pages ./pages
 COPY mqtt ./mqtt
@@ -12,6 +12,8 @@ COPY layouts ./layouts
 COPY assets ./assets
 COPY static ./static
 COPY utils ./utils
+COPY api ./api
+COPY tsconfig.json ./tsconfig.json
 
 RUN apt-get update && apt-get install python3 build-essential -y
 RUN npm ci --unsafe-perm
@@ -34,6 +36,8 @@ COPY  --from=dependency-install app/layouts ./layouts
 COPY  --from=dependency-install app/assets ./assets
 COPY  --from=dependency-install app/static ./static
 COPY  --from=dependency-install app/utils ./utils
+COPY  --from=dependency-install app/api ./api
+COPY  --from=dependency-install app/nuxt.config.ts ./
 
 
 COPY --from=dependency-install app/node_modules ./node_modules
