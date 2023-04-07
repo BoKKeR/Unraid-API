@@ -1,3 +1,4 @@
+import express from 'express'
 const colors = require('vuetify/es5/util/colors').default
 const URLS = {
   LOGIN: '/api/login',
@@ -41,6 +42,17 @@ export default {
     ],
   },
 
+  publicRuntimeConfig: {
+    keyStorage: process.env.KeyStorage,
+  },
+  privateRuntimeConfig: {
+    mqttBroker: process.env.MQTTBroker,
+    mqttPort: process.env.MQTTPort,
+    mqttUser: process.env.MQTTUser,
+    mqttPass: process.env.MQTTPass,
+    mqttBaseTopic: process.env.MQTTBaseTopic,
+  },
+
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [],
 
@@ -56,6 +68,9 @@ export default {
     '@nuxt/typescript-build',
     // https://go.nuxtjs.dev/tailwindcss
     '@nuxtjs/vuetify',
+    '@nuxtjs/axios',
+    '@nuxtjs/pwa',
+    // '~/mqtt',
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
@@ -65,7 +80,9 @@ export default {
   ],
 
   serverMiddleware: [
+    express.json(),
     // Will register file from project api directory to handle /api/* requires
+    { path: URLS.PROXY_IMAGE_VM, handler: '~/api/index.ts' },
     { path: URLS.LOGIN, handler: '~/api/login.ts' },
     { path: URLS.GET_SERVERS, handler: '~/api/getServers.ts' },
     { path: URLS.VM_STATUS, handler: '~/api/changeVMStatus.ts' },
@@ -80,7 +97,6 @@ export default {
     { path: URLS.MQTT_DEVICE_CHANGE, handler: '~/api/mqttDevices.ts' },
     { path: URLS.DELETE_SERVER, handler: '~/api/deleteServer.ts' },
     { path: URLS.PROXY_IMAGE, handler: '~/api/proxyImage.ts' },
-    { path: URLS.PROXY_IMAGE_VM, handler: '~/api/proxyImage.ts' },
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios

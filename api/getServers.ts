@@ -1,7 +1,7 @@
 import fs from 'fs'
 import { getUnraidDetails } from '../utils/Unraid'
 
-export default function (req, res, next) {
+export default async function (req, res, next) {
   let servers = {}
   try {
     // @ts-ignore
