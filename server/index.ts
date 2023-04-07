@@ -1,11 +1,11 @@
-const express = require('express')
-const consola = require('consola')
-const { Nuxt, Builder } = require('nuxt')
-const app = express()
+import express from 'express'
+import consola from 'consola'
+import { Nuxt, Builder } from 'nuxt'
 
 // Import and Set Nuxt.js options
-const config = require('../nuxt.config.js')
-config.dev = !(process.env.NODE_ENV === 'production')
+import config from './nuxt.config'
+const app = express()
+const isDev = !(process.env.NODE_ENV === 'production')
 
 async function start() {
   // Init Nuxt.js
@@ -17,7 +17,7 @@ async function start() {
   } = nuxt.options.server
 
   // Build only in dev mode
-  if (config.dev) {
+  if (isDev) {
     const builder = new Builder(nuxt)
     await builder.build()
   } else {
@@ -29,9 +29,16 @@ async function start() {
 
   // Listen the server
   app.listen(port, host)
+  console.log('--------------')
+  console.log('--------------')
+  console.log('--------------')
+  console.log('--------------')
+  console.log('--------------')
   consola.ready({
     message: `Server listening on http://${host}:${port}`,
     badge: true,
   })
 }
 start()
+
+export default start

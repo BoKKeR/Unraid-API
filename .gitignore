@@ -94,3 +94,7 @@ sw.*
 config
 
 .env
+
+nuxt.config.js
+server/nuxt.config.ts
+server-dist/

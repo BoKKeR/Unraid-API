@@ -24,7 +24,7 @@
               />
             </template>
 
-            <v-expansion-panel>
+            <v-expansion-panel :value="0">
               <v-expansion-panel-content
                 v-for="vm in server.vm.details"
                 :key="vm.id"
@@ -79,7 +79,7 @@
               />
             </template>
 
-            <v-expansion-panel>
+            <v-expansion-panel :value="0">
               <v-expansion-panel-content
                 v-for="docker in server.docker.details.containers"
                 :key="docker.name"

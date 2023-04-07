@@ -4,7 +4,7 @@
       <v-card-title class="headline">
         {{ server.serverDetails ? server.serverDetails.title : 'Server' }}
       </v-card-title>
-      <v-expansion-panel>
+      <v-expansion-panel :value="0">
         <v-expansion-panel-content v-if="server.vm">
           <template #header> Details </template>
           <v-btn
@@ -42,7 +42,7 @@
         </v-expansion-panel-content>
         <v-expansion-panel-content v-if="server.vm">
           <template #header> VMs: </template>
-          <v-expansion-panel>
+          <v-expansion-panel :value="0">
             <v-expansion-panel-content
               v-for="vm in server.vm.details"
               :key="vm.id"
@@ -141,7 +141,7 @@
               <v-chip>RAM: {{ vm.ramAllocation }}</v-chip>
               <v-chip>HDD: {{ vm.hddAllocation.total }}</v-chip>
               <v-chip>Primary GPU: {{ vm.primaryGPU }}</v-chip>
-              <v-expansion-panel>
+              <v-expansion-panel :value="0">
                 Disks:
                 <v-expansion-panel-content
                   v-for="(row, rowIndex) in vm.hddAllocation.all"
@@ -172,7 +172,7 @@
                 </v-expansion-panel-content>
                 <v-expansion-panel-content v-if="vm.edit">
                   <template #header> PCI Devices </template>
-                  <v-expansion-panel>
+                  <v-expansion-panel :value="0">
                     <v-expansion-panel-content v-if="vm.edit.pcis">
                       <template #header> GPUs </template>
                       <div v-for="(detail, key) in vm.edit.pcis" :key="key">
@@ -237,7 +237,7 @@
         </v-expansion-panel-content>
         <v-expansion-panel-content v-if="server.pciDetails">
           <template #header> PCI Devices </template>
-          <v-expansion-panel>
+          <v-expansion-panel :value="0">
             <v-expansion-panel-content v-if="server.pciDetails">
               <template #header> GPUs </template>
               <div v-for="(detail, key) in server.pciDetails" :key="key">
@@ -281,7 +281,7 @@
         </v-expansion-panel-content>
         <v-expansion-panel-content v-if="server.docker">
           <template #header> Dockers </template>
-          <v-expansion-panel>
+          <v-expansion-panel :value="0">
             <v-expansion-panel-content
               v-for="docker in server.docker.details.containers"
               :key="docker.containerId"
