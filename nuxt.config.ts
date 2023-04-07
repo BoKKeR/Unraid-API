@@ -19,7 +19,6 @@ const URLS = {
 
 export default {
   telemetry: false,
-
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'Unraid-API',
