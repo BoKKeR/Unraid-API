@@ -1,9 +1,7 @@
 <template>
   <v-dialog v-model="dialog" width="500">
-    <template v-slot:activator="{ on }">
-      <v-btn color="info" dark v-on="on">
-        Edit
-      </v-btn>
+    <template #activator="{ on }">
+      <v-btn color="info" dark v-on="on"> Edit </v-btn>
     </template>
 
     <v-card>
@@ -11,17 +9,13 @@
         {{ vm.name }}
       </v-card-title>
 
-      <v-card-text>
-        This will contain edit options.
-      </v-card-text>
+      <v-card-text> This will contain edit options. </v-card-text>
 
       <v-divider />
 
       <v-card-actions>
         <v-spacer />
-        <v-btn color="primary" flat @click="dialog = false">
-          Confirm
-        </v-btn>
+        <v-btn color="primary" flat @click="dialog = false"> Confirm </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -29,14 +23,14 @@
 
 <script>
 export default {
-  name: "EditVmCard",
-  props: ["vm"],
+  name: 'EditVmCard',
+  props: ['vm'],
   data() {
     return {
-      dialog: false
-    };
-  }
-};
+      dialog: false,
+    }
+  },
+}
 </script>
 
 <style scoped></style>

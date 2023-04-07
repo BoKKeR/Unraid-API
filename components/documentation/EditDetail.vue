@@ -8,8 +8,8 @@
         <v-textarea
           :value="
             textContent +
-              ' ' +
-              (defaultValue ? '(default: ' + defaultValue + ')' : '')
+            ' ' +
+            (defaultValue ? '(default: ' + defaultValue + ')' : '')
           "
           solo
           readonly
@@ -21,7 +21,7 @@
 </template>
 <script>
 export default {
-  name: "EditDetail",
-  props: ["title", "textContent", "defaultValue"]
-};
+  name: 'EditDetail',
+  props: ['title', 'textContent', 'defaultValue'],
+}
 </script>

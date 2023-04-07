@@ -1,9 +1,7 @@
 <template xmlns:v-slot="http://www.w3.org/1999/XSL/Transform">
   <v-dialog v-model="dialogue" width="500">
-    <template v-slot:activator="{ on }">
-      <v-btn color="info" dark v-on="on">
-        GPU Swap
-      </v-btn>
+    <template #activator="{ on }">
+      <v-btn color="info" dark v-on="on"> GPU Swap </v-btn>
     </template>
 
     <v-card>
@@ -55,51 +53,49 @@
 
       <v-card-actions>
         <v-spacer />
-        <v-btn color="primary" flat @click="swapGPUs">
-          Confirm
-        </v-btn>
+        <v-btn color="primary" flat @click="swapGPUs"> Confirm </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
-import axios from "axios";
+import axios from 'axios'
 
 export default {
-  name: "GpuSwap",
-  props: ["server", "ip", "checkForServerPassword"],
+  name: 'GpuSwap',
+  props: ['server', 'ip', 'checkForServerPassword'],
   data() {
     return {
       vMSelector1: false,
       vMSelector2: false,
       pciSelectors: [],
       dialogue: false,
-      pciIds: [0]
-    };
+      pciIds: [0],
+    }
   },
   methods: {
     async swapGPUs() {
-      let auth = await this.checkForServerPassword(this.ip);
+      const auth = await this.checkForServerPassword(this.ip)
       axios({
-        method: "post",
-        url: "api/gpuSwap",
+        method: 'post',
+        url: 'api/gpuSwap',
         data: {
           id1: this.vMSelector1,
           id2: this.vMSelector2,
           pciIds: this.pciSelectors,
           server: this.ip,
-          auth
-        }
+          auth,
+        },
       }).then((response) => {
-        this.dialogue = false;
+        this.dialogue = false
         if (response) {
-          console.log(response);
+          console.log(response)
         }
-      });
-    }
-  }
-};
+      })
+    },
+  },
+}
 </script>
 
 <style scoped></style>

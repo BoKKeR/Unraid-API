@@ -46,9 +46,7 @@
             <v-btn color="blue darken-1" flat @click="dialog = false">
               Cancel
             </v-btn>
-            <v-btn color="blue darken-1" flat @click="submit">
-              Confirm
-            </v-btn>
+            <v-btn color="blue darken-1" flat @click="submit"> Confirm </v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -57,39 +55,39 @@
 </template>
 
 <script>
-import SetupCard from "../components/SetupCard";
-import ServerCard from "../components/ServerCard";
-import axios from "axios";
-import { Base64 } from "js-base64";
+import axios from 'axios'
+import { Base64 } from 'js-base64'
+import SetupCard from '../components/SetupCard'
+import ServerCard from '../components/ServerCard'
 
 export default {
   components: {
     SetupCard,
-    ServerCard
+    ServerCard,
   },
   data() {
     return {
       servers: [],
       userPasswordPrompt: false,
       authentication: {},
-      user: "",
-      password: "",
+      user: '',
+      password: '',
       resolve: false,
       reject: false,
-      checkIp: ""
-    };
+      checkIp: '',
+    }
   },
   mounted() {
-    this.getServers();
+    this.getServers()
   },
   methods: {
     getServers() {
       axios({
-        method: "get",
-        url: "api/getServers",
+        method: 'get',
+        url: 'api/getServers',
         headers: {
-          Authorization: JSON.stringify(this.authentication)
-        }
+          Authorization: JSON.stringify(this.authentication),
+        },
       })
         .then(async (response) => {
           if (
@@ -97,43 +95,43 @@ export default {
               Object.keys(this.authentication).length &&
             !response.data.servers[Object.keys(response.data.servers)[0]].status
           ) {
-            let returnedServers = Object.keys(response.data.servers);
+            const returnedServers = Object.keys(response.data.servers)
             for (let i = 0; i < returnedServers.length; i++) {
-              let serverIp = returnedServers[i];
+              const serverIp = returnedServers[i]
               if (!this.authentication[serverIp]) {
-                await this.checkForServerPassword(serverIp);
+                await this.checkForServerPassword(serverIp)
               }
             }
-            this.getServers();
+            this.getServers()
           } else {
-            this.servers = response.data.servers;
-            setTimeout(() => this.getServers(), 5000);
+            this.servers = response.data.servers
+            setTimeout(() => this.getServers(), 5000)
           }
         })
         .catch((e) => {
-          setTimeout(() => this.getServers(), 10000);
-        });
+          setTimeout(() => this.getServers(), 10000)
+        })
     },
     checkForServerPassword(ip) {
       if (this.authentication[ip]) {
-        return this.authentication[ip];
+        return this.authentication[ip]
       }
-      this.userPasswordPrompt = true;
-      this.checkIp = ip;
+      this.userPasswordPrompt = true
+      this.checkIp = ip
 
       return new Promise((resolve, reject) => {
-        this.resolve = resolve;
-        this.reject = reject;
+        this.resolve = resolve
+        this.reject = reject
       }).then((data) => {
-        this.authentication[ip] = data;
-        return data;
-      });
+        this.authentication[ip] = data
+        return data
+      })
     },
     submit() {
-      this.userPasswordPrompt = false;
-      this.user = this.user ? this.user : "root";
-      this.resolve(Base64.encode(this.user.concat(":", this.password)));
-    }
-  }
-};
+      this.userPasswordPrompt = false
+      this.user = this.user ? this.user : 'root'
+      this.resolve(Base64.encode(this.user.concat(':', this.password)))
+    },
+  },
+}
 </script>

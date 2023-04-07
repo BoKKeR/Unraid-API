@@ -2,17 +2,15 @@
   <v-flex xs12 sm6 md4>
     <v-card>
       <v-card-title class="headline">
-        {{ server.serverDetails ? server.serverDetails.title : "Server" }}
+        {{ server.serverDetails ? server.serverDetails.title : 'Server' }}
       </v-card-title>
       <v-expansion-panel>
         <v-expansion-panel-content v-if="server.vm">
-          <template v-slot:header>
-            Details
-          </template>
+          <template #header> Details </template>
           <v-btn
             v-if="
               server.serverDetails.arrayStatus &&
-                !server.serverDetails.arrayStatus.includes('Started')
+              !server.serverDetails.arrayStatus.includes('Started')
             "
             :disabled="server.isBusy"
             color="success"
@@ -26,7 +24,7 @@
           <v-btn
             v-if="
               server.serverDetails.arrayStatus &&
-                server.serverDetails.arrayStatus.includes('Started')
+              server.serverDetails.arrayStatus.includes('Started')
             "
             :disabled="server.isBusy"
             color="error"
@@ -43,17 +41,15 @@
           </v-chip>
         </v-expansion-panel-content>
         <v-expansion-panel-content v-if="server.vm">
-          <template v-slot:header>
-            VMs:
-          </template>
+          <template #header> VMs: </template>
           <v-expansion-panel>
             <v-expansion-panel-content
               v-for="vm in server.vm.details"
               :key="vm.id"
-              style="display: inline-block;"
+              style="display: inline-block"
             >
-              <template v-slot:header>
-                <div style="width: 50%;">
+              <template #header>
+                <div style="width: 50%">
                   {{ vm.name }}
                   <div>
                     <v-btn
@@ -65,7 +61,7 @@
                       dark
                       @click="startVM(vm)"
                     >
-                      <v-icon style="font-size: 28px;">
+                      <v-icon style="font-size: 28px">
                         play_circle_outline
                       </v-icon>
                     </v-btn>
@@ -78,7 +74,7 @@
                       dark
                       @click="pauseVM(vm)"
                     >
-                      <v-icon style="font-size: 28px;">
+                      <v-icon style="font-size: 28px">
                         pause_circle_outline
                       </v-icon>
                     </v-btn>
@@ -91,9 +87,7 @@
                       dark
                       @click="restartVM(vm)"
                     >
-                      <v-icon style="font-size: 28px;">
-                        autorenew
-                      </v-icon>
+                      <v-icon style="font-size: 28px"> autorenew </v-icon>
                     </v-btn>
                     <v-btn
                       v-if="vm.status !== 'stopped'"
@@ -104,9 +98,7 @@
                       dark
                       @click="stopVM(vm)"
                     >
-                      <v-icon style="font-size: 28px;">
-                        stop
-                      </v-icon>
+                      <v-icon style="font-size: 28px"> stop </v-icon>
                     </v-btn>
                     <v-btn
                       v-if="vm.status !== 'stopped'"
@@ -117,9 +109,7 @@
                       dark
                       @click="forceStopVM(vm)"
                     >
-                      <v-icon style="font-size: 28px;">
-                        cancel
-                      </v-icon>
+                      <v-icon style="font-size: 28px"> cancel </v-icon>
                     </v-btn>
                   </div>
                 </div>
@@ -127,16 +117,16 @@
                   :class="{
                     success: vm.status === 'started',
                     error: vm.status === 'stopped',
-                    warning: vm.status === 'paused'
+                    warning: vm.status === 'paused',
                   }"
-                  style="width: 20px;"
+                  style="width: 20px"
                   right
                   justify-center
                 >
                   <v-progress-circular
                     v-if="vm.isBusy"
                     indeterminate
-                    style="width: 20px;"
+                    style="width: 20px"
                   />
                   <div v-if="!vm.isBusy">
                     {{ vm.status }}
@@ -145,9 +135,7 @@
               </template>
               <img class="left" :src="vm.icon" />
               <edit-vm-card :vm="vm" />
-              <v-btn color="info" dark @click="downloadXML(vm)">
-                XML
-              </v-btn>
+              <v-btn color="info" dark @click="downloadXML(vm)"> XML </v-btn>
               <v-chip>{{ vm.id }}</v-chip>
               <v-chip>Cores: {{ vm.coreCount }}</v-chip>
               <v-chip>RAM: {{ vm.ramAllocation }}</v-chip>
@@ -159,7 +147,7 @@
                   v-for="(row, rowIndex) in vm.hddAllocation.all"
                   :key="rowIndex"
                 >
-                  <template v-slot:header>
+                  <template #header>
                     <div>{{ rowIndex }}</div>
                   </template>
                   <v-chip v-for="(detail, name) in row" :key="name">
@@ -168,9 +156,7 @@
                   <br />
                 </v-expansion-panel-content>
                 <v-expansion-panel-content v-if="vm.edit">
-                  <template v-slot:header>
-                    USBs:
-                  </template>
+                  <template #header> USBs: </template>
                   <div v-for="usb in vm.edit.usbs" :key="usb.id">
                     <usb-detail
                       v-if="usb.checked"
@@ -185,14 +171,10 @@
                   </div>
                 </v-expansion-panel-content>
                 <v-expansion-panel-content v-if="vm.edit">
-                  <template v-slot:header>
-                    PCI Devices
-                  </template>
+                  <template #header> PCI Devices </template>
                   <v-expansion-panel>
                     <v-expansion-panel-content v-if="vm.edit.pcis">
-                      <template v-slot:header>
-                        GPUs
-                      </template>
+                      <template #header> GPUs </template>
                       <div v-for="(detail, key) in vm.edit.pcis" :key="key">
                         <usb-detail
                           v-if="detail.gpu && detail.checked"
@@ -207,9 +189,7 @@
                       </div>
                     </v-expansion-panel-content>
                     <v-expansion-panel-content v-if="vm.edit.pcis">
-                      <template v-slot:header>
-                        Sound
-                      </template>
+                      <template #header> Sound </template>
                       <div v-for="(detail, key) in vm.edit.pcis" :key="key">
                         <usb-detail
                           v-if="detail.sound && detail.checked"
@@ -224,9 +204,7 @@
                       </div>
                     </v-expansion-panel-content>
                     <v-expansion-panel-content v-if="vm.edit.pcis">
-                      <template v-slot:header>
-                        Other
-                      </template>
+                      <template #header> Other </template>
                       <div v-for="(detail, key) in vm.edit.pcis" :key="key">
                         <usb-detail
                           v-if="!detail.sound && !detail.gpu && detail.checked"
@@ -247,9 +225,7 @@
           </v-expansion-panel>
         </v-expansion-panel-content>
         <v-expansion-panel-content v-if="server.usbDetails">
-          <template v-slot:header>
-            USBs
-          </template>
+          <template #header> USBs </template>
           <div v-for="(detail, key) in server.usbDetails" :key="key">
             <usb-detail
               :detail="detail"
@@ -260,14 +236,10 @@
           </div>
         </v-expansion-panel-content>
         <v-expansion-panel-content v-if="server.pciDetails">
-          <template v-slot:header>
-            PCI Devices
-          </template>
+          <template #header> PCI Devices </template>
           <v-expansion-panel>
             <v-expansion-panel-content v-if="server.pciDetails">
-              <template v-slot:header>
-                GPUs
-              </template>
+              <template #header> GPUs </template>
               <div v-for="(detail, key) in server.pciDetails" :key="key">
                 <usb-detail
                   v-if="detail.gpu"
@@ -280,9 +252,7 @@
               </div>
             </v-expansion-panel-content>
             <v-expansion-panel-content v-if="server.pciDetails">
-              <template v-slot:header>
-                Sound
-              </template>
+              <template #header> Sound </template>
               <div v-for="(detail, key) in server.pciDetails" :key="key">
                 <usb-detail
                   v-if="detail.sound"
@@ -295,9 +265,7 @@
               </div>
             </v-expansion-panel-content>
             <v-expansion-panel-content v-if="server.pciDetails">
-              <template v-slot:header>
-                Other
-              </template>
+              <template #header> Other </template>
               <div v-for="(detail, key) in server.pciDetails" :key="key">
                 <usb-detail
                   v-if="!detail.sound && !detail.gpu"
@@ -312,17 +280,15 @@
           </v-expansion-panel>
         </v-expansion-panel-content>
         <v-expansion-panel-content v-if="server.docker">
-          <template v-slot:header>
-            Dockers
-          </template>
+          <template #header> Dockers </template>
           <v-expansion-panel>
             <v-expansion-panel-content
               v-for="docker in server.docker.details.containers"
               :key="docker.containerId"
-              style="display: inline-block;"
+              style="display: inline-block"
             >
-              <template v-slot:header>
-                <div style="width: 50%;">
+              <template #header>
+                <div style="width: 50%">
                   {{ docker.name }}
                   <div>
                     <v-btn
@@ -334,7 +300,7 @@
                       dark
                       @click="startDocker(docker)"
                     >
-                      <v-icon style="font-size: 28px;">
+                      <v-icon style="font-size: 28px">
                         play_circle_outline
                       </v-icon>
                     </v-btn>
@@ -347,7 +313,7 @@
                       dark
                       @click="pauseDocker(docker)"
                     >
-                      <v-icon style="font-size: 28px;">
+                      <v-icon style="font-size: 28px">
                         pause_circle_outline
                       </v-icon>
                     </v-btn>
@@ -360,9 +326,7 @@
                       dark
                       @click="restartDocker(docker)"
                     >
-                      <v-icon style="font-size: 28px;">
-                        autorenew
-                      </v-icon>
+                      <v-icon style="font-size: 28px"> autorenew </v-icon>
                     </v-btn>
                     <v-btn
                       v-if="docker.status !== 'stopped'"
@@ -373,9 +337,7 @@
                       dark
                       @click="stopDocker(docker)"
                     >
-                      <v-icon style="font-size: 28px;">
-                        stop
-                      </v-icon>
+                      <v-icon style="font-size: 28px"> stop </v-icon>
                     </v-btn>
                   </div>
                 </div>
@@ -383,16 +345,16 @@
                   :class="{
                     success: docker.status === 'started',
                     error: docker.status === 'stopped',
-                    warning: docker.status === 'paused'
+                    warning: docker.status === 'paused',
                   }"
-                  style="width: 20px;"
+                  style="width: 20px"
                   right
                   justify-center
                 >
                   <v-progress-circular
                     v-if="docker.isBusy"
                     indeterminate
-                    style="width: 20px;"
+                    style="width: 20px"
                   />
                   <div v-if="!docker.isBusy">
                     {{ docker.status }}
@@ -407,9 +369,7 @@
           </v-expansion-panel>
         </v-expansion-panel-content>
         <v-expansion-panel-content v-if="server.vm">
-          <template v-slot:header>
-            Utils
-          </template>
+          <template #header> Utils </template>
           <gpu-swap
             :server="server"
             :ip="ip"
@@ -417,11 +377,9 @@
           />
         </v-expansion-panel-content>
         <v-expansion-panel-content v-if="false">
-          <template v-slot:header>
-            Terminal
-          </template>
+          <template #header> Terminal </template>
           <iframe
-            style="width: 100%;"
+            style="width: 100%"
             height="500px"
             :src="'http://' + ip + '/webterminal/'"
           />
@@ -432,97 +390,97 @@
 </template>
 
 <script>
-import axios from "axios";
-import EditVmCard from "./EditVmCard";
-import UsbDetail from "./UsbDetail";
-import GpuSwap from "./GpuSwap";
+import axios from 'axios'
+import EditVmCard from './EditVmCard'
+import UsbDetail from './UsbDetail'
+import GpuSwap from './GpuSwap'
 
 export default {
-  name: "ServerCardVue",
+  name: 'ServerCardVue',
   components: {
     GpuSwap,
     EditVmCard,
-    UsbDetail
+    UsbDetail,
   },
-  props: ["server", "ip", "checkForServerPassword"],
+  props: ['server', 'ip', 'checkForServerPassword'],
   methods: {
     startArray() {
-      this.changeArrayStatus("start");
+      this.changeArrayStatus('start')
     },
     stopArray() {
-      this.changeArrayStatus("stop");
+      this.changeArrayStatus('stop')
     },
     async changeArrayStatus(action) {
-      let auth = await this.checkForServerPassword(this.ip);
-      this.server.isBusy = true;
+      const auth = await this.checkForServerPassword(this.ip)
+      this.server.isBusy = true
       axios({
-        method: "post",
-        url: "api/arrayStatus",
+        method: 'post',
+        url: 'api/arrayStatus',
         data: {
-          action: action,
+          action,
           server: this.ip,
-          auth
-        }
+          auth,
+        },
       }).then((response) => {
         if (response) {
-          this.server.isBusy = false;
+          this.server.isBusy = false
           if (
             response.data &&
             response.data.message &&
             response.data.message.success
           ) {
-            this.server.arrayStatus = response.data.message.state;
+            this.server.arrayStatus = response.data.message.state
           } else if (
             response &&
             response.data &&
             response.data.message &&
             response.data.message.error
           ) {
-            alert(response.data.message.error);
+            alert(response.data.message.error)
           }
         }
-      });
+      })
     },
     startVM(vm) {
-      if (vm.status === "paused" || vm.status === "pmsuspended") {
-        this.changeVMStatus(vm, "domain-resume");
+      if (vm.status === 'paused' || vm.status === 'pmsuspended') {
+        this.changeVMStatus(vm, 'domain-resume')
       } else {
-        this.changeVMStatus(vm, "domain-start");
+        this.changeVMStatus(vm, 'domain-start')
       }
     },
     restartVM(vm) {
-      this.changeVMStatus(vm, "domain-restart");
+      this.changeVMStatus(vm, 'domain-restart')
     },
     pauseVM(vm) {
-      this.changeVMStatus(vm, "domain-pause");
+      this.changeVMStatus(vm, 'domain-pause')
     },
     stopVM(vm) {
-      this.changeVMStatus(vm, "domain-stop");
+      this.changeVMStatus(vm, 'domain-stop')
     },
     forceStopVM(vm) {
-      this.changeVMStatus(vm, "domain-destroy");
+      this.changeVMStatus(vm, 'domain-destroy')
     },
     async changeVMStatus(vm, action) {
-      let auth = await this.checkForServerPassword(this.ip);
-      this.server.vm.details[vm.id].isBusy = true;
+      const auth = await this.checkForServerPassword(this.ip)
+      this.server.vm.details[vm.id].isBusy = true
       axios({
-        method: "post",
-        url: "api/vmStatus",
+        method: 'post',
+        url: 'api/vmStatus',
         data: {
           id: vm.id,
-          action: action,
+          action,
           server: this.ip,
-          auth
-        }
+          auth,
+        },
       }).then((response) => {
         if (response) {
-          this.server.vm.details[vm.id].isBusy = false;
+          this.server.vm.details[vm.id].isBusy = false
           if (
             response.data &&
             response.data.message &&
             response.data.message.success
           ) {
-            this.server.vm.details[vm.id].status = response.data.message.state;
+            this.server.vm.details[vm.id].status = response.data.message.state
           } else if (
             response &&
             response.data &&
@@ -531,62 +489,62 @@ export default {
           ) {
             if (
               response.data.message.error ===
-              "Requested operation is not valid: domain is not running"
+              'Requested operation is not valid: domain is not running'
             ) {
-              this.server.vm.details[vm.id].status = "stopped";
+              this.server.vm.details[vm.id].status = 'stopped'
             }
-            alert(response.data.message.error);
+            alert(response.data.message.error)
           }
         }
-      });
+      })
     },
     startDocker(docker) {
-      if (docker.status === "paused") {
-        this.changeDockerStatus(docker, "domain-resume");
+      if (docker.status === 'paused') {
+        this.changeDockerStatus(docker, 'domain-resume')
       } else {
-        this.changeDockerStatus(docker, "domain-start");
+        this.changeDockerStatus(docker, 'domain-start')
       }
     },
     restartDocker(docker) {
-      this.changeDockerStatus(docker, "domain-restart");
+      this.changeDockerStatus(docker, 'domain-restart')
     },
     pauseDocker(docker) {
-      this.changeDockerStatus(docker, "domain-pause");
+      this.changeDockerStatus(docker, 'domain-pause')
     },
     stopDocker(docker) {
-      this.changeDockerStatus(docker, "domain-stop");
+      this.changeDockerStatus(docker, 'domain-stop')
     },
     async changeDockerStatus(docker, action) {
-      let auth = await this.checkForServerPassword(this.ip);
-      this.server.docker.details.containers[docker.containerId].isBusy = true;
+      const auth = await this.checkForServerPassword(this.ip)
+      this.server.docker.details.containers[docker.containerId].isBusy = true
       axios({
-        method: "post",
-        url: "api/dockerStatus",
+        method: 'post',
+        url: 'api/dockerStatus',
         data: {
           id: docker.containerId,
-          action: action,
+          action,
           server: this.ip,
-          auth
-        }
+          auth,
+        },
       }).then((response) => {
         if (response) {
           this.server.docker.details.containers[
             docker.containerId
-          ].isBusy = false;
+          ].isBusy = false
           if (
             response.data &&
             response.data.message &&
-            response.data.includes("success")
+            response.data.includes('success')
           ) {
-            if (action.includes("pause")) {
+            if (action.includes('pause')) {
               this.server.docker.details.containers[docker.containerId].status =
-                "paused";
-            } else if (action.includes("stop")) {
+                'paused'
+            } else if (action.includes('stop')) {
               this.server.docker.details.containers[docker.containerId].status =
-                "stopped";
+                'stopped'
             } else {
               this.server.docker.details.containers[docker.containerId].status =
-                "started";
+                'started'
             }
           } else if (
             response &&
@@ -596,34 +554,34 @@ export default {
           ) {
             if (
               response.data.message.error ===
-              "Requested operation is not valid: domain is not running"
+              'Requested operation is not valid: domain is not running'
             ) {
               this.server.docker.details.containers[docker.containerId].status =
-                "stopped";
+                'stopped'
             }
-            alert(response.data.message.error);
+            alert(response.data.message.error)
           }
         }
-      });
+      })
     },
     downloadXML(vm) {
-      this.download(vm.name + ".xml", vm.xml);
+      this.download(vm.name + '.xml', vm.xml)
     },
     download(filename, text) {
-      var element = document.createElement("a");
+      const element = document.createElement('a')
       element.setAttribute(
-        "href",
-        "data:text/plain;charset=utf-8," + encodeURIComponent(text)
-      );
-      element.setAttribute("download", filename);
+        'href',
+        'data:text/plain;charset=utf-8,' + encodeURIComponent(text)
+      )
+      element.setAttribute('download', filename)
 
-      element.style.display = "none";
-      document.body.appendChild(element);
+      element.style.display = 'none'
+      document.body.appendChild(element)
 
-      element.click();
+      element.click()
 
-      document.body.removeChild(element);
-    }
-  }
-};
+      document.body.removeChild(element)
+    },
+  },
+}
 </script>

@@ -11,9 +11,7 @@
     >
       <v-flex text-xs-left grow>
         <v-card>
-          <v-card-title>
-            Connect a server
-          </v-card-title>
+          <v-card-title> Connect a server </v-card-title>
           <v-card-text>
             Request
             <v-text-field value="POST: api/login" solo readonly light />
@@ -29,9 +27,7 @@
       </v-flex>
       <v-flex text-xs-left grow>
         <v-card>
-          <v-card-title>
-            Get Server Details
-          </v-card-title>
+          <v-card-title> Get Server Details </v-card-title>
           <v-card-text>
             Request
             <v-text-field value="GET: api/getServers" solo readonly light />
@@ -40,9 +36,7 @@
       </v-flex>
       <v-flex text-xs-left>
         <v-card>
-          <v-card-title>
-            VM Controls
-          </v-card-title>
+          <v-card-title> VM Controls </v-card-title>
           <v-card-text>
             Request
             <v-text-field value="POST: api/vmStatus" solo readonly light />
@@ -120,9 +114,7 @@
       </v-flex>
       <v-flex text-xs-left grow>
         <v-card>
-          <v-card-title>
-            USB Controls
-          </v-card-title>
+          <v-card-title> USB Controls </v-card-title>
           <v-card-text>
             Request
             <v-text-field value="POST: api/usbAttach" solo readonly light />
@@ -138,9 +130,7 @@
       </v-flex>
       <v-flex text-xs-left grow>
         <v-card>
-          <v-card-title>
-            PCI Controls
-          </v-card-title>
+          <v-card-title> PCI Controls </v-card-title>
           <v-card-text>
             Request
             <v-text-field value="POST: api/pciAttach" solo readonly light />
@@ -156,9 +146,7 @@
       </v-flex>
       <v-flex text-xs-left grow>
         <v-card>
-          <v-card-title>
-            GPU Swap
-          </v-card-title>
+          <v-card-title> GPU Swap </v-card-title>
           <v-card-text>
             Request
             <v-text-field value="POST: api/gpuSwap" solo readonly light />
@@ -174,9 +162,7 @@
       </v-flex>
       <v-flex text-xs-left grow>
         <v-card>
-          <v-card-title>
-            VM Edit
-          </v-card-title>
+          <v-card-title> VM Edit </v-card-title>
           <v-card-text>
             Request
             <v-text-field value="POST: api/editVM" solo readonly light />
@@ -386,9 +372,7 @@
       </v-flex>
       <v-flex text-xs-left grow>
         <v-card>
-          <v-card-title>
-            VM Create
-          </v-card-title>
+          <v-card-title> VM Create </v-card-title>
           <v-card-text>
             Request
             <v-text-field value="POST: api/createVM" solo readonly light />
@@ -405,9 +389,9 @@
   </v-container>
 </template>
 <script>
-import EditDetail from "../components/documentation/EditDetail";
+import EditDetail from '../components/documentation/EditDetail'
 
 export default {
-  components: { EditDetail }
-};
+  components: { EditDetail },
+}
 </script>

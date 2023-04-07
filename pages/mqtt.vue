@@ -1,23 +1,19 @@
 <template>
   <div>
     <v-expansion-panel v-if="servers && Object.keys(servers).length > 0">
-      <template v-slot:header>
-        Servers
-      </template>
+      <template #header> Servers </template>
       <v-expansion-panel-content v-for="(server, ip) in servers" :key="ip">
-        <template v-slot:header>
+        <template #header>
           {{ ip }}
 
           <v-spacer />
-          <v-btn @click="deleteServer(ip)">
-            Delete
-          </v-btn>
+          <v-btn @click="deleteServer(ip)"> Delete </v-btn>
           <v-switch v-model="serversActive[ip]" label="Hide" color="blue" />
         </template>
 
         <v-expansion-panel v-if="server && server.vm">
           <v-expansion-panel-content>
-            <template v-slot:header>
+            <template #header>
               VMs
 
               <v-spacer />
@@ -33,7 +29,7 @@
                 v-for="vm in server.vm.details"
                 :key="vm.id"
               >
-                <template v-slot:header>
+                <template #header>
                   {{ vm.name }}
 
                   <v-spacer />
@@ -46,7 +42,7 @@
 
                 <v-expansion-panel v-if="vm.edit.usbs">
                   <v-expansion-panel-content>
-                    <template v-slot:header>
+                    <template #header>
                       USBs
 
                       <v-spacer />
@@ -72,7 +68,7 @@
         </v-expansion-panel>
         <v-expansion-panel v-if="server && server.docker">
           <v-expansion-panel-content>
-            <template v-slot:header>
+            <template #header>
               Docker
 
               <v-spacer />
@@ -88,7 +84,7 @@
                 v-for="docker in server.docker.details.containers"
                 :key="docker.name"
               >
-                <template v-slot:header>
+                <template #header>
                   {{ docker.name }}
 
                   <v-spacer />
@@ -104,10 +100,8 @@
         </v-expansion-panel>
       </v-expansion-panel-content>
       <v-expansion-panel-content>
-        <template v-slot:header>
-          <v-btn @click="submit">
-            Submit
-          </v-btn>
+        <template #header>
+          <v-btn @click="submit"> Submit </v-btn>
         </template>
       </v-expansion-panel-content>
     </v-expansion-panel>
@@ -115,10 +109,10 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from 'axios'
 
 export default {
-  name: "Mqtt",
+  name: 'Mqtt',
   data() {
     return {
       servers: [],
@@ -128,107 +122,107 @@ export default {
       vmUsbsActive: {},
       usbsActive: {},
       serversDockerActive: {},
-      dockerActive: {}
-    };
+      dockerActive: {},
+    }
   },
 
   mounted() {
-    this.getServers();
+    this.getServers()
   },
   methods: {
     deleteServer(ip) {
       axios({
-        method: "post",
-        url: "api/deleteServer",
-        data: ip
+        method: 'post',
+        url: 'api/deleteServer',
+        data: ip,
       }).then((response) => {
-        console.log(response);
-        this.servers[ip] = undefined;
-        this.getServers();
-      });
+        console.log(response)
+        this.servers[ip] = undefined
+        this.getServers()
+      })
     },
     getServers() {
       axios({
-        method: "get",
-        url: "api/getServers"
+        method: 'get',
+        url: 'api/getServers',
       })
         .then(async (response) => {
-          this.servers = response.data.servers;
-          console.log(this.servers);
+          this.servers = response.data.servers
+          console.log(this.servers)
         })
         .catch((e) => {
-          console.log(e);
-        });
+          console.log(e)
+        })
       axios({
-        method: "get",
-        url: "api/mqttDevices"
+        method: 'get',
+        url: 'api/mqttDevices',
       }).then(async (response) => {
         response.data.forEach((entry) => {
-          if (!entry.includes("|")) {
-            this.serversActive[entry] = true;
-          } else if (entry.includes("|VMs")) {
-            this.serverVMsActive[entry] = true;
-          } else if (entry.includes("|Dockers")) {
-            this.serversDockerActive[entry] = true;
-          } else if (entry.includes("|USBs")) {
-            this.vmUsbsActive[entry] = true;
-          } else if (entry.split("|").length > 2) {
-            this.usbsActive[entry] = true;
+          if (!entry.includes('|')) {
+            this.serversActive[entry] = true
+          } else if (entry.includes('|VMs')) {
+            this.serverVMsActive[entry] = true
+          } else if (entry.includes('|Dockers')) {
+            this.serversDockerActive[entry] = true
+          } else if (entry.includes('|USBs')) {
+            this.vmUsbsActive[entry] = true
+          } else if (entry.split('|').length > 2) {
+            this.usbsActive[entry] = true
           } else {
-            this.dockerActive[entry] = true;
-            this.vmsActive[entry] = true;
+            this.dockerActive[entry] = true
+            this.vmsActive[entry] = true
           }
-        });
-        this.$forceUpdate();
-      });
+        })
+        this.$forceUpdate()
+      })
     },
     submit() {
-      let data = [];
+      const data = []
       Object.keys(this.serversActive).forEach((key) => {
         if (this.serversActive[key]) {
-          data.push(key);
+          data.push(key)
         }
-      });
+      })
       Object.keys(this.serverVMsActive).forEach((key) => {
         if (this.serverVMsActive[key]) {
-          data.push(key);
+          data.push(key)
         }
-      });
+      })
       Object.keys(this.vmsActive).forEach((key) => {
         if (this.vmsActive[key]) {
-          data.push(key);
+          data.push(key)
         }
-      });
+      })
       Object.keys(this.vmUsbsActive).forEach((key) => {
         if (this.vmUsbsActive[key]) {
-          data.push(key);
+          data.push(key)
         }
-      });
+      })
       Object.keys(this.usbsActive).forEach((key) => {
         if (this.usbsActive[key]) {
-          data.push(key);
+          data.push(key)
         }
-      });
+      })
       Object.keys(this.serversDockerActive).forEach((key) => {
         if (this.serversDockerActive[key]) {
-          data.push(key);
+          data.push(key)
         }
-      });
+      })
       Object.keys(this.dockerActive).forEach((key) => {
         if (this.dockerActive[key]) {
-          data.push(key);
+          data.push(key)
         }
-      });
+      })
       axios({
-        method: "post",
-        url: "api/mqttDevices",
-        data
+        method: 'post',
+        url: 'api/mqttDevices',
+        data,
       }).then((response) => {
-        console.log(response);
-      });
-    }
-  }
-};
+        console.log(response)
+      })
+    },
+  },
+}
 </script>
 
 <style scoped></style>
