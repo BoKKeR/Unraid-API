@@ -24,16 +24,16 @@
         </v-list-tile>
       </v-list>
     </v-navigation-drawer>
-    <v-toolbar :clipped-left="clipped" fixed app>
+    <v-app-bar :clipped-left="clipped" fixed app>
       <v-toolbar-side-icon @click="drawer = !drawer" />
       <v-toolbar-title v-text="title" />
       <v-spacer />
-    </v-toolbar>
-    <v-content>
+    </v-app-bar>
+    <v-main>
       <v-container>
         <nuxt />
       </v-container>
-    </v-content>
+    </v-main>
     <v-footer :fixed="fixed" app>
       <span>&copy; 2021 Electric Brain Ltd</span>
     </v-footer>
