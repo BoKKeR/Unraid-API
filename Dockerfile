@@ -14,6 +14,7 @@ COPY static ./static
 COPY utils ./utils
 COPY api ./api
 COPY tsconfig.json ./tsconfig.json
+COPY * ./
 
 RUN apt-get update && apt-get install python3 build-essential -y
 RUN npm ci --unsafe-perm
