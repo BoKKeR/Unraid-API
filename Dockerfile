@@ -2,7 +2,8 @@ FROM node:16.13.2-buster-slim as dependency-install
 
 # Install dependencies
 WORKDIR /app
-COPY package*.* ./
+
+COPY package*.json ./
 COPY nuxt.config.ts ./
 COPY layouts ./layouts
 COPY pages ./pages
@@ -12,9 +13,10 @@ COPY layouts ./layouts
 COPY assets ./assets
 COPY static ./static
 COPY utils ./utils
+COPY server ./server
 COPY api ./api
 COPY tsconfig.json ./tsconfig.json
-COPY * ./
+
 
 RUN apt-get update && apt-get install python3 build-essential -y
 RUN npm ci --unsafe-perm
@@ -22,6 +24,7 @@ RUN npm run build
 
 # Start app
 FROM node:16.13.2-buster-slim
+RUN apt-get update && apt-get install curl -y
 
 ENV NODE_ENV production
 ENV HOST 0.0.0.0
@@ -35,6 +38,7 @@ COPY  --from=dependency-install app/mqtt ./mqtt
 COPY  --from=dependency-install app/components ./components
 COPY  --from=dependency-install app/layouts ./layouts
 COPY  --from=dependency-install app/assets ./assets
+COPY  --from=dependency-install app/server ./server
 COPY  --from=dependency-install app/static ./static
 COPY  --from=dependency-install app/utils ./utils
 COPY  --from=dependency-install app/api ./api
@@ -45,4 +49,7 @@ COPY --from=dependency-install app/node_modules ./node_modules
 COPY --from=dependency-install app/.nuxt ./.nuxt
 COPY --from=dependency-install app/package*.* ./
 EXPOSE 3000
-CMD ["npm" , "start"]
+RUN npm run deprecated:build:server
+#RUN npm run deprecated:start:server
+CMD ["npm" ,"run", "deprecated:start:server"]
+#CMD ["npm" , "start"]

@@ -3,9 +3,9 @@ import http from 'http'
 import https from 'https'
 import axios from 'axios'
 
-import fetch from 'node-fetch'
+const fetch = require('node-fetch')
 
-import FormData from 'form-data'
+const FormData = require('form-data')
 
 axios.defaults.withCredentials = true
 axios.defaults.httpsAgent = new https.Agent({
