@@ -26,14 +26,14 @@ ENV NODE_OPTIONS="--max_old_space_size=4096"
 ENV PORT 80
 
 WORKDIR /app
-COPY  --from=dependency-install layouts ./
-COPY  --from=dependency-install pages ./
-COPY  --from=dependency-install mqtt ./
-COPY  --from=dependency-install components ./
-COPY  --from=dependency-install layouts ./
-COPY  --from=dependency-install assets ./
-COPY  --from=dependency-install static ./
-COPY  --from=dependency-install utils ./
+COPY  --from=dependency-install app/layouts ./
+COPY  --from=dependency-install app/pages ./
+COPY  --from=dependency-install app/mqtt ./
+COPY  --from=dependency-install app/components ./
+COPY  --from=dependency-install app/layouts ./
+COPY  --from=dependency-install app/assets ./
+COPY  --from=dependency-install app/static ./
+COPY  --from=dependency-install app/utils ./
 
 
 COPY --from=dependency-install app/node_modules ./node_modules
