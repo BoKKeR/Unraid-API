@@ -3,6 +3,16 @@ FROM node:16.13.2-buster-slim as dependency-install
 # Install dependencies
 WORKDIR /app
 COPY package*.* ./
+
+COPY layouts ./
+COPY pages ./
+COPY mqtt ./
+COPY compontents ./
+COPY layouts ./
+COPY assets ./
+COPY static ./
+COPY utils ./
+
 RUN apt-get update && apt-get install python3 build-essential -y
 RUN npm ci --unsafe-perm
 RUN npm run build
