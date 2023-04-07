@@ -13,7 +13,7 @@ FROM node:16.13.2-buster-slim
 ENV NODE_ENV production
 ENV HOST 0.0.0.0
 ENV NODE_OPTIONS="--max_old_space_size=4096"
-ENV PORT 3000
+ENV PORT 80
 
 WORKDIR /app
 COPY --from=dependency-install app/node_modules ./node_modules
