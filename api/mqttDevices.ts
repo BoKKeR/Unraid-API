@@ -1,0 +1,35 @@
+import fs from 'fs'
+
+export default function (req, res, next) {
+  const body = [] as any
+  let data
+  req
+    .on('data', (chunk) => {
+      body.push(chunk)
+    })
+    .on('end', async () => {
+      try {
+        data = JSON.parse(Buffer.concat(body).toString())
+        if (data) {
+          const response = {} as any
+          storeDevices(data)
+          response.message = 'Success'
+          response.status = 200
+          res.send(response)
+        }
+      } catch (e) {
+        try {
+          res.send(fs.readFileSync('config/mqttDisabledDevices.json'))
+        } catch (e) {
+          fs.writeFileSync(
+            'config/mqttDisabledDevices.json',
+            JSON.stringify([])
+          )
+        }
+      }
+    })
+}
+
+function storeDevices(data) {
+  fs.writeFileSync('config/mqttDisabledDevices.json', JSON.stringify(data))
+}
