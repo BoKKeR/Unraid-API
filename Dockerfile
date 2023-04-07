@@ -7,7 +7,7 @@ COPY package*.* ./
 COPY layouts ./
 COPY pages ./
 COPY mqtt ./
-COPY compontents ./
+COPY components ./
 COPY layouts ./
 COPY assets ./
 COPY static ./
