@@ -13,7 +13,7 @@
     "lintfix": "prettier --write --list-different . && npm run lint:js -- --fix",
     "test": "jest",
     "build:client": "nuxt build",
-    "build:server": "cp nuxt.config.ts server/; cp tsconfig.json server/; tsc -p server/"
+    "build:server": "cp nuxt.config.ts server/; tsc -p server/"
   },
   "dependencies": {
     "@nuxtjs/axios": "^5.13.6",
