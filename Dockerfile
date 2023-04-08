@@ -22,6 +22,7 @@ COPY nuxt.config.ts ./server/
 RUN apt-get update && apt-get install python3 build-essential -y
 RUN npm ci --unsafe-perm
 RUN npm run build
+RUN npm run deprecated:build:server
 
 # Start app
 FROM node:16.13.2-buster-slim
@@ -34,7 +35,7 @@ ENV PORT 80
 
 WORKDIR /app
 COPY  --from=dependency-install app/ ./
-COPY  --from=dependency-install app/nuxt.config.ts ./server/
+#COPY  --from=dependency-install app/nuxt.config.ts ./server/
 # COPY  --from=dependency-install app/static ./static
 # COPY  --from=dependency-install app/layouts ./layouts
 # COPY  --from=dependency-install app/pages ./pages
@@ -57,6 +58,5 @@ COPY  --from=dependency-install app/nuxt.config.ts ./server/
 
 EXPOSE 3000
 #ENTRYPOINT ["tail", "-f", "/dev/null"]
-RUN npm run deprecated:build:server
 CMD ["npm" ,"run", "deprecated:start:server"]
 #CMD ["npm" , "start"]
