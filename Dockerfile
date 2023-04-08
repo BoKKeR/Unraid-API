@@ -4,6 +4,7 @@ FROM node:16.13.2-buster-slim as dependency-install
 WORKDIR /app
 
 COPY ./ ./
+COPY nuxt.config.ts ./server/
 # COPY nuxt.config.ts ./
 # COPY layouts ./layouts
 # COPY pages ./pages
@@ -33,6 +34,7 @@ ENV PORT 80
 
 WORKDIR /app
 COPY  --from=dependency-install app/ ./
+COPY  --from=dependency-install app/nuxt.config.ts ./server/
 # COPY  --from=dependency-install app/static ./static
 # COPY  --from=dependency-install app/layouts ./layouts
 # COPY  --from=dependency-install app/pages ./pages
@@ -54,6 +56,7 @@ COPY  --from=dependency-install app/ ./
 #RUN mkdir ./config
 
 EXPOSE 3000
+#ENTRYPOINT ["tail", "-f", "/dev/null"]
 RUN npm run deprecated:build:server
 CMD ["npm" ,"run", "deprecated:start:server"]
 #CMD ["npm" , "start"]
