@@ -21,7 +21,7 @@ COPY nuxt.config.ts ./server/
 
 RUN apt-get update && apt-get install python3 build-essential -y
 RUN npm ci --unsafe-perm
-RUN npm run build
+# RUN npm run build
 RUN npm run deprecated:build:server
 
 # Start app
@@ -35,6 +35,7 @@ ENV PORT 80
 
 WORKDIR /app
 COPY  --from=dependency-install app/ ./
+#COPY  --from=dependency-install app/package*.* ./
 #COPY  --from=dependency-install app/nuxt.config.ts ./server/
 # COPY  --from=dependency-install app/static ./static
 # COPY  --from=dependency-install app/layouts ./layouts
@@ -50,13 +51,13 @@ COPY  --from=dependency-install app/ ./
 # COPY  --from=dependency-install app/nuxt.config.ts ./
 
 
-#COPY --from=dependency-install app/node_modules ./node_modules
-#COPY --from=dependency-install app/.nuxt ./.nuxt
-#COPY --from=dependency-install app/package*.* ./
+COPY --from=dependency-install app/node_modules ./node_modules
+COPY --from=dependency-install app/package*.* ./
+COPY --from=dependency-install app/server-dist ./server-dist
 
 #RUN mkdir ./config
 
-EXPOSE 3000
+EXPOSE 80
 #ENTRYPOINT ["tail", "-f", "/dev/null"]
 CMD ["npm" ,"run", "deprecated:start:server"]
 #CMD ["npm" , "start"]
